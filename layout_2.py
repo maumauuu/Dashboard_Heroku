@@ -11,8 +11,34 @@ import seaborn as sns
 
 df = pd.read_csv("data/timesData.csv")
 available_indicators = df.columns.unique()
-cd = pd.read_csv("data/carData.csv", )
+cd = pd.read_csv("data/carData.csv" )
 
+
+
+
+def bar_chart():
+    cdd = cd[['Car_Name','Transmission','Selling_Price','Fuel_Type']]
+    pv = cdd.pivot_table( index=['Car_Name'], columns=['Transmission'], values =['Selling_Price'], fill_value=0)
+    pv2 = cdd.pivot_table( index=['Car_Name'], columns=['Fuel_Type'], values =['Selling_Price'], fill_value=0)
+
+    print(pv)
+    trace1 = go.Bar(x=pv.index, y=pv[('Selling_Price', 'Manual')], name='Manual')
+    trace2 = go.Bar(x=pv.index, y=pv[('Selling_Price', 'Automatic')], name='Automatic')
+    trace3 = go.Bar(x=pv2.index, y=pv2[('Selling_Price', 'Diesel')], name='Diesel')
+    trace4 = go.Bar(x=pv2.index, y=pv2[('Selling_Price', 'Petrol')], name='Petrol')
+    trace5 = go.Bar(x=pv2.index, y=pv2[('Selling_Price', 'CNG')], name='CNG')
+
+    return html.Div(children=[
+        html.H1(children='Transmission type'),
+
+        dcc.Graph(
+            id='example-graph',
+            figure={
+                'data': [trace1, trace2,trace3,trace4,trace5],
+                'layout':
+                    go.Layout(title='Selling Price according to the transmission and Fuel Type', barmode='stack')
+            })
+    ])
 
 def generate_table( max_rows=10):
     create_table()
@@ -53,7 +79,7 @@ def analyse_data(val):
         #print('!!!!!!!!!!2\n',cd_d)
         return table(cd_d)
     elif val == 2:
-        return
+        return bar_chart()
     elif val == 3:
         cdd = requete_price()
         figure_ = sns.catplot(x='Car_Name', y='Price',data=cdd, jitter='0.25')
