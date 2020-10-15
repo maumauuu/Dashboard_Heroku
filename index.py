@@ -8,8 +8,9 @@ from dash.dependencies import Input, Output
 import pandas as pd
 
 
+
 from app import app
-from layout_2 import choose_year
+from layout_2 import choose_year,generate_table
 import callbacks
 
 app.layout = html.Div([
@@ -22,7 +23,7 @@ server = app.server
               [Input('url', 'pathname')])
 
 def display_page(pathname):
-    return choose_year()
+    return generate_table()
 
 if __name__ == '__main__':
     app.run_server(debug=True)

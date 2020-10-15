@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+ #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
-from layout_2 import generate_table, choose_year, update_layout
+from layout_2 import generate_table, choose_year, update_layout,analyse_data
 from app import app
 
 
@@ -19,6 +19,11 @@ def display_value(year,indicator):
     elif 'abs-choice'in changed_id:'''
     return update_layout(year,indicator)
 
+@app.callback( Output('data_dropdown', 'children'),
+    [Input('show_data', 'value')])
+
+def show_data(value):
+    return analyse_data(value)
 
 @app.callback(
     Output('page', 'pathname'),

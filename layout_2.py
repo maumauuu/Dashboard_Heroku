@@ -5,24 +5,68 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
-
+from dataReader import data_vis,create_table,requete_price
+import seaborn as sns
 
 
 df = pd.read_csv("data/timesData.csv")
 available_indicators = df.columns.unique()
+cd = pd.read_csv("data/carData.csv", )
 
 
 def generate_table( max_rows=10):
-    return html.Table([
-        html.Thead(
-            html.Tr([html.Th(col) for col in df.columns])
+    create_table()
+    return  html.Div([
+        dcc.Dropdown(
+            id='show_data',
+            options=[
+                {'label': 'Analyser Data', 'value': 1},
+                {'label': 'Show bar Chart', 'value': 2},
+                {'label': 'Show Catplot', 'value': 3}
+            ],
+            value=0
         ),
-        html.Tbody([
-            html.Tr([
-                html.Td(df.iloc[i][col]) for col in df.columns
-            ]) for i in range(min(len(df), max_rows))
+
+        html.Div(id='data_dropdown')
         ])
-    ])
+
+def table(df_, max_rows=10):
+    return html.Table([
+            html.Thead(
+                html.Tr([html.Th(col) for col in df_])
+            ),
+            html.Tbody([
+                html.Tr([
+                    html.Td(df_.iloc[i][col]) for col in df_
+                ]) for i in range(min(len(df_), max_rows))
+            ])
+         ])
+
+def analyse_data(val):
+    if val ==1 :
+        #print(cd.describe())
+        cd_d = cd.describe()
+        cd_d['Stats'] = ['count','mean','std','min','25%','50%','75%','max']
+        header_list = ['Stats'] + [c for c in cd.describe()]
+        #print(header_list)
+        cd_d = cd_d.reindex(columns=header_list)
+        #print('!!!!!!!!!!2\n',cd_d)
+        return table(cd_d)
+    elif val == 2:
+        return
+    elif val == 3:
+        cdd = requete_price()
+        figure_ = sns.catplot(x='Car_Name', y='Price',data=cdd, jitter='0.25')
+        return html.Div([
+            table(cdd),
+            html.Div([
+                    dcc.Graph(figure= figure_
+                    )
+                    ])
+            ])
+    else:
+        return table(cd)
+
 
 
 
@@ -48,7 +92,8 @@ def choose_year():
 
     ])
 
-
+def draw_seaborn():
+    return html.Div()
 
 def update_layout(year,x_name='female_male_ratio'):
     filtered_df = df[df.year == year].iloc[:50, :];
