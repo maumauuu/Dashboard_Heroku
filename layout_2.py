@@ -8,12 +8,36 @@ import plotly.graph_objs as go
 from dataReader import data_vis,create_table,requete_price
 import seaborn as sns
 
+from enum import Enum
+class Q(Enum):
+    Q2 = 2
+    Q4 = 4
+    Q5 = 5
+    Q51 = 51
+    Q6 = 6
 
 df = pd.read_csv("data/timesData.csv")
 available_indicators = df.columns.unique()
 cd = pd.read_csv("data/carData.csv" )
 
+Qs=['Q1','Q2','Q4','Q5','Q51','Q6']
+Ts =['Data Snapshot', 'Data Exploration', 'Data Visualization','Linear regression','My linear Regression','SVM']
 
+def menu():
+    return html.Div([
+        html.Div([
+
+            dcc.Location(id='page', refresh=False),
+            html.H3('Menu'),
+            dcc.RadioItems(
+            id='exo-choice',
+            options=[{'label': l, 'value': v} for l,v in zip(Ts,Qs)],
+            value='Q1',
+            labelStyle={'display': 'block'}
+            )],style={'width': '20%', 'display': 'inline-block'}),
+        html.Div(id='menu-output-container',
+        style={'width': '80%', 'display': 'inline-block'})
+    ])
 
 
 def bar_chart():
@@ -37,7 +61,13 @@ def bar_chart():
                 'data': [trace1, trace2,trace3,trace4,trace5],
                 'layout':
                     go.Layout(title='Selling Price according to the transmission and Fuel Type', barmode='stack')
-            })
+            }),
+        html.P(className='box',children= ''' \n\n In this bar chart, we can see the price of each vehicle according to the transmission type and Fuel type.
+        We can see that on the lower range of Cars there is not much choice for the same car e.g Activia 4g have only one type of fuel and one 
+        of transmission.
+        
+        On the contrary,
+        ''')
     ])
 
 def generate_table( max_rows=10):
@@ -68,8 +98,11 @@ def table(df_, max_rows=10):
             ])
          ])
 
+
 def analyse_data(val):
-    if val ==1 :
+    if val == 'Q1':
+        return generate_table()
+    if val == 'Q2' :
         #print(cd.describe())
         cd_d = cd.describe()
         cd_d['Stats'] = ['count','mean','std','min','25%','50%','75%','max']
@@ -78,10 +111,17 @@ def analyse_data(val):
         cd_d = cd_d.reindex(columns=header_list)
         #print('!!!!!!!!!!2\n',cd_d)
         return table(cd_d)
-    elif val == 2:
+    elif val == 'Q4':
         return bar_chart()
-    elif val == 3:
-        cdd = requete_price()
+    elif val == 'Q5':
+        return
+    elif val == 'Q51':
+        return
+
+    elif val == 'Q6':
+        return
+
+        '''cdd = requete_price()
         figure_ = sns.catplot(x='Car_Name', y='Price',data=cdd, jitter='0.25')
         return html.Div([
             table(cdd),
@@ -89,7 +129,7 @@ def analyse_data(val):
                     dcc.Graph(figure= figure_
                     )
                     ])
-            ])
+            ])'''
     else:
         return table(cd)
 

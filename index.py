@@ -10,7 +10,7 @@ import pandas as pd
 
 
 from app import app
-from layout_2 import choose_year,generate_table
+from layout_2 import choose_year,generate_table,menu
 import callbacks
 
 app.layout = html.Div([
@@ -23,7 +23,7 @@ server = app.server
               [Input('url', 'pathname')])
 
 def display_page(pathname):
-    return generate_table()
+    return menu()
 
 if __name__ == '__main__':
     app.run_server(debug=True)

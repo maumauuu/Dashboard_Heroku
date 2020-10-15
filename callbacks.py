@@ -25,6 +25,13 @@ def display_value(year,indicator):
 def show_data(value):
     return analyse_data(value)
 
+@app.callback( Output('menu-output-container', 'children'),
+    [Input('exo-choice', 'value')])
+
+def show_data(value):
+    return analyse_data(value)
+
+
 @app.callback(
     Output('page', 'pathname'),
     [Input('year-dropdown', 'value')
