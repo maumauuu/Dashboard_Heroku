@@ -267,13 +267,12 @@ def svm_():
     conn = sqlite3.connect('data/car.db')
     cur = conn.cursor()
     cur.execute('''  
-        SELECT Selling_Price,Year FROM CARS 
-                  ''')
-    df_regression = DataFrame(cur.fetchall(), columns=[ 'Year','Selling_Price'])
+            SELECT Selling_Price,Year FROM CARS 
+                      ''')
+    df_regression = DataFrame(cur.fetchall(), columns=['Year', 'Selling_Price'])
 
     y_ = df_regression.Year.values
     X_ = df_regression.iloc[:, 1:].values
-
     X_train, X_test, y_train, y_test = train_test_split(X_, y_, test_size=0.20)
 
     clf = svm.SVR(kernel='linear')
