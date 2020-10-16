@@ -144,21 +144,21 @@ def reg_sk():
     df = pd.DataFrame({'Actual': y_test, 'Predicted': pred})
     # print(df)
     #plt.show()
-    trace1 = go.Scatter(x=X, y=y,
+    trace1 = go.Scatter(x=X_train.flatten(), y=y_train,
                         mode='markers')
 
-    trace3 = go.Scatter(x=X_test, y=pred,
+    trace3 = go.Scatter(x=X_test.flatten(), y=pred,
                         mode='markers')
 
     layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
                        hovermode='closest'
                        )
 
-    trace2 = go.Scatter(x=X_test, y=pred,
+    trace2 = go.Scatter(x=X_test.flatten(), y=pred,
                         line=dict(width=2,
                                   color='rgb(255, 0, 0)'))
 
-    return go.Figure(data=[trace1],
+    return go.Figure(data=[trace1,trace2],
                      layout=layout), 'Régression linéaire avec Sickit-learn.'
 
 
