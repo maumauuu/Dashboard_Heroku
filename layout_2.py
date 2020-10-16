@@ -5,6 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
+import app
 from dataReader import data_vis, create_table, requete_price,reg_np, reg_sp,reg_sk,reg_sk_multiple,my_reg, svm_
 import seaborn as sns
 
@@ -56,7 +57,11 @@ def bar_chart():
         of transmission.
 
         On the contrary,
-        ''')
+        '''),
+
+        html.H1(children='Seaborn'),
+        html.Div(id='sea-plot',children= html.Img(src=app.img)),
+        html.P('Image du résultat en utilisant catplot de seaborn')
     ])
 
 
@@ -121,15 +126,31 @@ def table(df_, max_rows=10):
     ])
 
 
+def hist_dist():
+    return
+
+def my_describe():
+    cd_d = cd.describe()
+    cd_d['Stats'] = ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']
+    header_list = ['Stats'] + [c for c in cd.describe()]
+    cd_d = cd_d.reindex(columns=header_list)
+    return table(cd_d) , cd.shape
+
+def exploration():
+    des , s = my_describe()
+    pp = html.P(s)
+    return html.Div( [
+        html.Div(id='describe',children = des),
+        html.Div(id='shape',children=pp)
+    ])
+
+
+
 def analyse_data(val):
     if val == 'Q1':
         return table(cd)
     if val == 'Q2':
-        cd_d = cd.describe()
-        cd_d['Stats'] = ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']
-        header_list = ['Stats'] + [c for c in cd.describe()]
-        cd_d = cd_d.reindex(columns=header_list)
-        return table(cd_d)
+        return exploration()
     elif val == 'Q4':
         return bar_chart()
     elif val == 'Q5':

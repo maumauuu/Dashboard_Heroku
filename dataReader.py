@@ -8,7 +8,7 @@ import statsmodels.api as sm
 from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-
+import seaborn as sns
 from my_linear_regression import Linear_Regression
 from sklearn.linear_model import LinearRegression
 import plotly.express as px
@@ -37,14 +37,16 @@ def requete_price():
     conn = sqlite3.connect('data/car.db')
     cur = conn.cursor()
     cur.execute('''  
-    SELECT Car_Name, Selling_Price FROM CARS ORDER BY Selling_Price
+    SELECT Year, Selling_Price FROM CARS ORDER BY Selling_Price
               ''')
 
-    df = DataFrame(cur.fetchall(), columns=['Car_Name', 'Price'])
-    return df
+    df = DataFrame(cur.fetchall(), columns=['Year', 'Price'])
 
-    # sns.catplot(x='Car_Name', y='Price',
-    #           data=df, jitter='0.25')
+    sp = sns.catplot(x='Year', y='Price',
+                     data=df, jitter='0.25')
+    sp.savefig("assets/sea-plot.png")
+    #return df
+
 
 
 def reg_np():
@@ -208,7 +210,7 @@ def reg_sk_multiple():
 
     #trace2 = go.Scatter(x=X_test.flatten(), y=pred,
         #                line=dict(width=2,
-        #                          color='rgb(255, 0, 0)'))
+        #                 color='rgb(255, 0, 0)'))
 
     return go.Figure(data=[trace1, trace3],
                      layout=layout), 'Régression linéaire multiple avec Sickit-learn.'
@@ -309,3 +311,5 @@ def svm_():
                      layout=layout), 'Régression linéaire multiple avec Sickit-learn.'
 
 
+if __name__ == '__main__':
+    requete_price()
