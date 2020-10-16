@@ -246,11 +246,10 @@ def svm_():
     cur.execute('''  
         SELECT Selling_Price,Year FROM CARS 
                   ''')
-    df_regression = DataFrame(cur.fetchall(), columns=['Selling_Price', 'Year'])
+    df_regression = DataFrame(cur.fetchall(), columns=[ 'Year','Selling_Price'])
 
-    y_ = df_regression.iloc[:, :-1].values
-    # print(X.shape)
-    X_ = df_regression.iloc[:, 1].values
+    y_ = df_regression.Year.values
+    X_ = df_regression.iloc[:, 1:].values
 
     X_train, X_test, y_train, y_test = train_test_split(X_, y_, test_size=0.20)
 
@@ -259,8 +258,7 @@ def svm_():
     clf.fit(X_train, y_train)
 
     y_pred = clf.predict(X_test)
-
-    plt.clf()
+    # plt.clf()
 
     #plt.scatter(X_train, y_train)
     #plt.scatter(X_test, y_pred)
