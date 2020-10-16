@@ -145,10 +145,18 @@ def exploration():
     ])
 
 
+def gen_intro():
+    return html.Div([
 
+        html.Div(id='table',children=table(cd)),
+        html.P('Nous allons étudier un Dataset carData.csv contenant des informations sur différents modèles de voitures afin '
+               'de trouver quelle voiture acheter selon des critères pré-defnis.'
+               '\nComme on peut le voir sur l\'extrait du dataset au-dessus, nous avons à disposition des informations comme le prix de vente, le type '
+               'de transmission...')
+    ])
 def analyse_data(val):
     if val == 'Q1':
-        return table(cd)
+        return gen_intro()
     if val == 'Q2':
         return exploration()
     elif val == 'Q4':

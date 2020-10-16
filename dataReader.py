@@ -45,6 +45,7 @@ def requete_price():
     sp = sns.catplot(x='Year', y='Price',
                      data=df, jitter='0.25')
     sp.savefig("assets/sea-plot.png")
+    plt.show()
     #return df
 
 
@@ -294,7 +295,7 @@ def svm_():
     trace1 = go.Scatter(x=X_train.flatten(),y=y_train,
                           mode='markers')
 
-    trace3 = go.Scatter(x=X_test.flatten(),  y=y_pred,
+    trace3 = go.Scatter(x=X_test.flatten(), y=y_pred,
                           mode='markers')
 
     layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
