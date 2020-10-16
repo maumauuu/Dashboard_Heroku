@@ -5,7 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
-from dataReader import data_vis, create_table, requete_price,reg_np
+from dataReader import data_vis, create_table, requete_price,reg_np, reg_sp,reg_sk,reg_sk_multiple,my_reg
 import seaborn as sns
 
 cd = pd.read_csv("data/carData.csv")
@@ -85,9 +85,9 @@ def plot_regr(val):
     if val == 1:
         return reg_np()
     if val == 2:
-        return
+        return reg_sp()
     if val == 3:
-        return
+        return reg_sk()
     if val == 4:
         return
     else:

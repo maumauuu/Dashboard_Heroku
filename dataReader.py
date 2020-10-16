@@ -60,11 +60,14 @@ def reg_np():
 
     model = np.polyfit(X, y, 1)
     predict = np.poly1d(model)
-    x_lin_reg = X
+    x_lin_reg = X.iloc[:20]
     y_lin_reg = predict(x_lin_reg)
 
     print(X)
     trace1 = go.Scatter(x=X, y=y,
+                        mode='markers')
+
+    trace3 = go.Scatter(x=x_lin_reg, y=y_lin_reg,
                         mode='markers')
 
     layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
@@ -75,7 +78,11 @@ def reg_np():
                        line=dict(width=2,
                                  color='rgb(255, 0, 0)'))
 
-    return go.Figure(data=[trace1,trace2], layout=layout), 'Application de la régression linéaire en utilisant numpy'
+    return go.Figure(data=[trace1,trace2,trace3], layout=layout), 'Application de la régression linéaire en utilisant numpy\n' \
+                                                                  'le tracé de la droite de régression n\'est pas trés significatif dans notre cas' \
+                                                                  'mais on voit bien que les prédictions effectuées sur un échantillon sont correctes.'
+
+
 
 
 def reg_sp():
@@ -90,10 +97,28 @@ def reg_sp():
     y = df_regression.Year
 
     slope, intercept, r_value, p_value, std_err = sp.stats.linregress(X, y)
-    plt.plot(X, y, 'o', label='original data')
-    plt.plot(X, intercept + slope * X, 'r', label='fitted line')
-    plt.legend()
-    plt.show()
+    #plt.plot(X, y, 'o', label='original data')
+    #plt.plot(X, intercept + slope * X, 'r', label='fitted line')
+    #plt.legend()
+    #plt.show()
+    y_pred = intercept + slope * X
+
+    trace1 = go.Scatter(x=X, y=y,
+                        mode='markers')
+
+    #trace3 = go.Scatter(x=x_lin_reg, y=y_lin_reg,
+                  #      mode='markers')
+
+    layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
+                       hovermode='closest',
+
+                       )
+    trace2 = go.Scatter(x=X, y=y_pred,
+                        line=dict(width=2,
+                                  color='rgb(255, 0, 0)'))
+
+    return go.Figure(data=[trace1,trace2],
+                     layout=layout), 'Régression linéaire avec scipy.'
 
 
 def reg_sk():
@@ -118,7 +143,25 @@ def reg_sk():
 
     df = pd.DataFrame({'Actual': y_test, 'Predicted': pred})
     # print(df)
-    plt.show()
+    #plt.show()
+    trace1 = go.Scatter(x=X, y=y,
+                        mode='markers')
+
+    trace3 = go.Scatter(x=X_test, y=pred,
+                        mode='markers')
+
+    layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
+                       hovermode='closest'
+                       )
+
+    trace2 = go.Scatter(x=X_test, y=pred,
+                        line=dict(width=2,
+                                  color='rgb(255, 0, 0)'))
+
+    return go.Figure(data=[trace1],
+                     layout=layout), 'Régression linéaire avec Sickit-learn.'
+
+
 
 
 def reg_sk_multiple():
