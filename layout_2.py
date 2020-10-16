@@ -35,7 +35,6 @@ def bar_chart():
     pv = cdd.pivot_table(index=['Car_Name'], columns=['Transmission'], values=['Selling_Price'], fill_value=0)
     pv2 = cdd.pivot_table(index=['Car_Name'], columns=['Fuel_Type'], values=['Selling_Price'], fill_value=0)
 
-    print(pv)
     trace1 = go.Bar(x=pv.index, y=pv[('Selling_Price', 'Manual')], name='Manual')
     trace2 = go.Bar(x=pv.index, y=pv[('Selling_Price', 'Automatic')], name='Automatic')
     trace3 = go.Bar(x=pv2.index, y=pv2[('Selling_Price', 'Diesel')], name='Diesel')
@@ -71,7 +70,7 @@ def generate_table(max_rows=10):
                 {'label': 'Sickit Learn', 'value': 3},
                 {'label': 'Sickit Learn multiple', 'value': 4}
             ],
-            value=1
+            value=0
         ),
 
         html.Div([
@@ -95,6 +94,7 @@ def plot_regr(val):
 
 def gen_plot_svm():
     fig, com =svm_()
+    com = 'La Régression avec SVM donne les mêmes résultats que précédemment'
     return html.Div([
         dcc.Graph(id='plot-svm',figure=fig),
         html.P(id='comment', children=com)
@@ -129,7 +129,6 @@ def analyse_data(val):
     elif val == 'Q51':
         return
     elif val == 'Q6':
-        print('\n\nq6')
         return gen_plot_svm()
     else:
         return table(cd)

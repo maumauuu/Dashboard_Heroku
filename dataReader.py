@@ -55,15 +55,14 @@ def reg_np():
               ''')
     df_regression = DataFrame(cur.fetchall(), columns=['Selling_Price', 'Year'])
 
-    X = df_regression.Selling_Price
-    y = df_regression.Year
+    y = df_regression.Selling_Price
+    X = df_regression.Year
 
     model = np.polyfit(X, y, 1)
     predict = np.poly1d(model)
     x_lin_reg = X.iloc[:20]
     y_lin_reg = predict(x_lin_reg)
 
-    print(X)
     trace1 = go.Scatter(x=X, y=y,
                         mode='markers')
 
@@ -93,8 +92,8 @@ def reg_sp():
                   ''')
     df_regression = DataFrame(cur.fetchall(), columns=['Selling_Price', 'Year'])
 
-    X = df_regression.Selling_Price
-    y = df_regression.Year
+    y = df_regression.Selling_Price
+    X = df_regression.Year
 
     slope, intercept, r_value, p_value, std_err = sp.stats.linregress(X, y)
     #plt.plot(X, y, 'o', label='original data')
@@ -127,13 +126,11 @@ def reg_sk():
     cur.execute('''  
         SELECT Selling_Price,Year FROM CARS 
                   ''')
-    df_regression = DataFrame(cur.fetchall(), columns=['Selling_Price', 'Year'])
+    df_regression = DataFrame(cur.fetchall(), columns=['Year','Selling_Price', ])
 
-    # print(df_regression.shape)
-    X = df_regression.iloc[:, :-1].values
-    # print(X.shape)
-    y = df_regression.iloc[:, 1].values
-    # print(y.shape)
+    y = df_regression.Year.values
+    X = df_regression.iloc[:, 1:].values
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
     reg = LinearRegression().fit(X_train, y_train)
@@ -175,34 +172,39 @@ def reg_sk_multiple():
     dff = DataFrame(cur.fetchall(), columns=['Selling_Price', 'Kms_Driven', 'Transmission', 'Year'])
 
     # Récupérer l'ensemble des valeurs de la variable cible
-    Y = dff["Year"]
+    X = dff[["Year",'Kms_Driven']]
     # Récupérer les variables prédictives (on en a 2)
-    X = dff[['Kms_Driven', 'Selling_Price']]
+    y_ = dff['Selling_Price']
 
-    fig = plt.figure()
-    ax = fig.add_subplot(1, 2, 1, projection='3d')
-    ax.scatter(dff["Kms_Driven"], dff["Selling_Price"], dff["Year"], c='r', marker='^')
+    #fig = plt.figure()
+    #ax = fig.add_subplot(1, 2, 1, projection='3d')
+    #ax.scatter(dff["Kms_Driven"], dff["Selling_Price"], dff["Year"], c='r', marker='^')
 
-    ax.set_zlabel('Year')
-    ax.set_xlabel('Kms_Driven')
-    ax.set_ylabel('Selling_Price')
+    #ax.set_zlabel('Year')
+    #ax.set_xlabel('Kms_Driven')
+    #ax.set_ylabel('Selling_Price')
 
     #plt.show()
 
     scale = StandardScaler()
     # X_scaled = scale.fit_transform(X[['Kms_Driven', 'Selling_Price']].as_matrix())
 
-    est = sm.OLS(Y, X).fit()
+    est = sm.OLS(y_,X).fit()
 
-    trace1 = go.Scatter3d(x=dff.Selling_Price, z=Y,y=dff.Kms_Driven,
+    pred = est.predict(X)
+
+
+    trace1 = go.Scatter3d(x=dff.Year, z=y_, y=dff.Kms_Driven,
                         mode='markers')
 
-    trace3 = go.Scatter3d(x=dff.Selling_Price, z=est.predict(X),y= dff.Kms_Driven,
+    trace3 = go.Scatter3d(x=dff.Year, z=pred, y=dff.Kms_Driven,
                         mode='markers')
+
 
     layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
                        hovermode='closest'
                        )
+
 
     #trace2 = go.Scatter(x=X_test.flatten(), y=pred,
         #                line=dict(width=2,
@@ -223,8 +225,8 @@ def my_reg():
                   ''')
     df_regression = DataFrame(cur.fetchall(), columns=['Selling_Price', 'Year'])
 
-    X = df_regression.Selling_Price
-    y = df_regression.Year
+    y = df_regression.Selling_Price
+    X = df_regression.Year
 
     lr = Linear_Regression()
     lr.fit(X, y)
@@ -246,44 +248,41 @@ def svm_():
                   ''')
     df_regression = DataFrame(cur.fetchall(), columns=['Selling_Price', 'Year'])
 
-    X_ = df_regression.iloc[:, :-1].values
+    y_ = df_regression.iloc[:, :-1].values
     # print(X.shape)
-    y_ = df_regression.iloc[:, 1].values
+    X_ = df_regression.iloc[:, 1].values
 
     X_train, X_test, y_train, y_test = train_test_split(X_, y_, test_size=0.20)
-    print('pass 2')
 
-    clf = svm.SVC(kernel='linear')
-    print('pass 3')
+    clf = svm.SVR(kernel='linear')
 
     clf.fit(X_train, y_train)
-    print('pass 4')
 
     y_pred = clf.predict(X_test)
 
     plt.clf()
 
-    plt.scatter(X_train, y_train)
-    plt.scatter(X_test, y_pred)
+    #plt.scatter(X_train, y_train)
+    #plt.scatter(X_test, y_pred)
 
-    x1, x2, y1, y2 = plt.axis()
+    #x1, x2, y1, y2 = plt.axis()
 
-    plt.axis((x1, x2, 2002, 2019))
+    #   plt.axis((x1, x2, 2002, 2019))
     # plt.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=80,
     #            facecolors="none", zorder=10, edgecolors="k")
-    plt.show()
+    #plt.show()
 
-    trace1 = go.Scatter(x=X_train,y=y_train,
+    trace1 = go.Scatter(x=X_train.flatten(),y=y_train,
                           mode='markers')
 
-    trace3 = go.Scatter(x=X_test,  y=y_pred,
+    trace3 = go.Scatter(x=X_test.flatten(),  y=y_pred,
                           mode='markers')
 
     layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
                        hovermode='closest'
                        )
 
-    trace2 = go.Scatter(x=X_test, y=y_pred,
+    trace2 = go.Scatter(x=X_test.flatten(), y=y_pred,
                     line=dict(width=2,
                               color='rgb(255, 0, 0)'))
 
