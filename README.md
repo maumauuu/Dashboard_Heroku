@@ -40,6 +40,8 @@ Comparaison entre tous ces algorithmes de regréssion et avec SVM.
 Tous les algorithmes(regression et svm) donnent des résultats similaires, on nottera un temps beaucoup
 plus long pour SVM et la classe de regression.
 
+### Important
+L'algorithme de SVM dépasse le timeout sue Heroku, il ne s'affichera donc pas. Il marche en local.
 
 ## Architecture logiciel
 Le projet à été effectué sur ubuntu 18.04 avec

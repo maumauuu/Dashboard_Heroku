@@ -80,7 +80,7 @@ def reg_np():
                                  color='rgb(255, 0, 0)'))
 
     return go.Figure(data=[trace1,trace2,trace3], layout=layout), 'Application de la régression linéaire en utilisant numpy\n' \
-                                                                  'le tracé de la droite de régression n\'est pas trés significatif dans notre cas' \
+                                                                  'le tracé de la droite de régression n\'est pas trés significatif dans notre cas ' \
                                                                   'mais on voit bien que les prédictions effectuées sur un échantillon sont correctes.'
 
 
@@ -231,8 +231,7 @@ def my_reg():
     X = df_regression.Year.values
     y = df_regression.Selling_Price.values
 
-    print(X)
-    print(y)
+
     lr = Linear_Regression()
     lr.fit(X, y)
     X_test = X[:20]
@@ -306,7 +305,7 @@ def svm_():
                     line=dict(width=2,
                               color='rgb(255, 0, 0)'))
 
-    return go.Figure(data=[trace1, trace2,trace3],
+    return go.Figure(data=[trace1, trace2, trace3],
                      layout=layout), 'Régression linéaire multiple avec Sickit-learn.'
 
 

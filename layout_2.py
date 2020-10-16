@@ -56,7 +56,7 @@ def bar_chart():
         We can see that on the lower range of Cars there is not much choice for the same car e.g Activia 4g have only one type of fuel and one 
         of transmission.
 
-        On the contrary,
+        On the contrary,elantra has the 4 otpions and when we look at the price we can see that there is actually 2 differents cars.
         '''),
 
         html.H1(children='Seaborn'),
@@ -75,7 +75,7 @@ def generate_table(max_rows=10):
                 {'label': 'Sickit Learn', 'value': 3},
                 {'label': 'Sickit Learn multiple', 'value': 4}
             ],
-            value=0
+            value=1
         ),
 
         html.Div([
@@ -138,7 +138,7 @@ def my_describe():
 
 def exploration():
     des , s = my_describe()
-    pp = html.P(s)
+    pp = html.P('Il y a ' +str(s[0]) + ' lignes et ' +str(s[1])+' colonnes dans la base de données')
     return html.Div( [
         html.Div(id='describe',children = des),
         html.Div(id='shape',children=pp)
