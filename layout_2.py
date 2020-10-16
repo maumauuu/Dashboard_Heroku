@@ -5,7 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
-from dataReader import data_vis, create_table, requete_price
+from dataReader import data_vis, create_table, requete_price,reg_np
 import seaborn as sns
 
 cd = pd.read_csv("data/carData.csv")
@@ -71,21 +71,26 @@ def generate_table(max_rows=10):
                 {'label': 'Sickit Learn', 'value': 3},
                 {'label': 'Sickit Learn multiple', 'value': 4}
             ],
-            value=0
+            value=1
         ),
 
-        html.Div(id='data_dropdown')
+        html.Div([
+            dcc.Graph(id='data_dropdown'),
+            html.P(id='comment')
+            ])
     ])
 
 
 def plot_regr(val):
     if val == 1:
-        return
+        return reg_np()
     if val == 2:
         return
     if val == 3:
         return
     if val == 4:
+        return
+    else:
         return
 
 

@@ -9,11 +9,14 @@ from app import app
 
 
 
-@app.callback( Output('data_dropdown', 'children'),
-    [Input('show_data', 'value')])
+@app.callback( [Output('data_dropdown', 'figure'),
+                Output('comment','children')],
+                 [Input('show_data', 'value')])
 
 def show_data(value):
     return plot_regr(value)
+
+
 
 @app.callback( Output('menu-output-container', 'children'),
     [Input('exo-choice', 'value')])

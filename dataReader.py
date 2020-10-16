@@ -12,6 +12,8 @@ from sklearn.preprocessing import StandardScaler
 from my_linear_regression import Linear_Regression
 from sklearn.linear_model import LinearRegression
 import plotly.express as px
+import plotly.graph_objs as go
+
 
 cd = pd.read_csv("data/carData.csv", )
 
@@ -61,15 +63,19 @@ def reg_np():
     x_lin_reg = X
     y_lin_reg = predict(x_lin_reg)
 
-    fig = px.scatter(X, y)
-    fig.update_layout(margin={'l': 40, 'b': 40, 't': 10, 'r': 0}, hovermode='closest')
-    fig.update_xaxes(title='selling price', type='linear')
+    print(X)
+    trace1 = go.Scatter(x=X, y=y,
+                        mode='markers')
 
-    fig.update_yaxes(title='year', type='linear')
-    fig.show()
-    # plt.plot(x_lin_reg, y_lin_reg, c='r')
+    layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
+                       hovermode='closest',
 
-    return fig
+                       )
+    trace2= go.Scatter(x=x_lin_reg, y=y_lin_reg,
+                       line=dict(width=2,
+                                 color='rgb(255, 0, 0)'))
+
+    return go.Figure(data=[trace1,trace2], layout=layout), 'Application de la régression linéaire en utilisant numpy'
 
 
 def reg_sp():
