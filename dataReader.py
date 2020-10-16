@@ -307,7 +307,9 @@ def svm_():
                               color='rgb(255, 0, 0)'))
 
     return go.Figure(data=[trace1, trace2, trace3],
-                     layout=layout), 'Régression linéaire multiple avec Sickit-learn.'
+                     layout=layout), 'Régression linéaire multiple avec Sickit-learn.' \
+                                     '\n Contrairement à la régression linéaire qui minimise l\'erreur totale, ' \
+                                     'SVM essaie de miniser les marges en trouvant les meilleures vecteurs support.'
 
 
 if __name__ == '__main__':
