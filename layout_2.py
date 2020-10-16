@@ -97,7 +97,15 @@ def gen_plot_svm():
     com = 'La Régression avec SVM donne les mêmes résultats que précédemment'
     return html.Div([
         dcc.Graph(id='plot-svm',figure=fig),
-        html.P(id='comment', children=com)
+        html.P(id='comment-svm', children=com)
+    ])
+
+def gen_plot_my_reg():
+    fig, com =my_reg()
+    com = 'Ma Régression linéaire donne des résultats similaires, avec un temps plus long'
+    return html.Div([
+        dcc.Graph(id='plot-my-reg',figure=fig),
+        html.P(id='comment-reg', children=com)
     ])
 
 def table(df_, max_rows=10):
@@ -127,7 +135,7 @@ def analyse_data(val):
     elif val == 'Q5':
         return generate_table()
     elif val == 'Q51':
-        return
+        return gen_plot_my_reg()
     elif val == 'Q6':
         return gen_plot_svm()
     else:

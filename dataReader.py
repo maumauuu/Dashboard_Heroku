@@ -223,21 +223,42 @@ def my_reg():
     cur.execute('''  
         SELECT Selling_Price,Year FROM CARS 
                   ''')
+
     df_regression = DataFrame(cur.fetchall(), columns=['Selling_Price', 'Year'])
 
-    y = df_regression.Selling_Price
-    X = df_regression.Year
+    X = df_regression.Year.values
+    y = df_regression.Selling_Price.values
 
+    print(X)
+    print(y)
     lr = Linear_Regression()
     lr.fit(X, y)
-    pred = lr.predict(X)
+    X_test = X[:20]
+    pred = lr.predict(X_test)
 
-    plt.scatter(X, y)
-    x1, x2, y1, y2 = plt.axis()
-    plt.plot(X, pred, c='r')
+    #plt.scatter(X, y)
+    #x1, x2, y1, y2 = plt.axis()
+    #plt.plot(X, pred, c='r')
 
-    plt.axis((x1, x2, 2002, 2019))
-    plt.show()
+    #plt.axis((x1, x2, 2002, 2019))
+    #plt.show()
+
+    trace1 = go.Scatter(x=X, y=y,
+                          mode='markers')
+
+    trace3 = go.Scatter(x=X_test, y=pred,
+                          mode='markers')
+
+    layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
+                       hovermode='closest'
+                       )
+
+    # trace2 = go.Scatter(x=X_test.flatten(), y=pred,
+    #                line=dict(width=2,
+    #                          color='rgb(255, 0, 0)'))
+
+    return go.Figure(data=[trace1,trace3],
+                     layout=layout), 'Régression linéaire multiple avec Sickit-learn.'
 
 
 def svm_():
