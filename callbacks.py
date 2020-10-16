@@ -16,8 +16,6 @@ from app import app
 def show_data(value):
     return plot_regr(value)
 
-
-
 @app.callback( Output('menu-output-container', 'children'),
     [Input('exo-choice', 'value')])
 

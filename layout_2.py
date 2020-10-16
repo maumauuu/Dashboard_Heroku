@@ -5,7 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
-from dataReader import data_vis, create_table, requete_price,reg_np, reg_sp,reg_sk,reg_sk_multiple,my_reg
+from dataReader import data_vis, create_table, requete_price,reg_np, reg_sp,reg_sk,reg_sk_multiple,my_reg, svm_
 import seaborn as sns
 
 cd = pd.read_csv("data/carData.csv")
@@ -89,10 +89,16 @@ def plot_regr(val):
     if val == 3:
         return reg_sk()
     if val == 4:
-        return
+        return reg_sk_multiple()
     else:
         return
 
+def gen_plot_svm():
+    fig, com =svm_()
+    return html.Div([
+        dcc.Graph(id='plot-svm',figure=fig),
+        html.P(id='comment', children=com)
+    ])
 
 def table(df_, max_rows=10):
     return html.Table([
@@ -123,7 +129,8 @@ def analyse_data(val):
     elif val == 'Q51':
         return
     elif val == 'Q6':
-        return
+        print('\n\nq6')
+        return gen_plot_svm()
     else:
         return table(cd)
 

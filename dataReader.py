@@ -187,12 +187,29 @@ def reg_sk_multiple():
     ax.set_xlabel('Kms_Driven')
     ax.set_ylabel('Selling_Price')
 
-    plt.show()
+    #plt.show()
 
     scale = StandardScaler()
     # X_scaled = scale.fit_transform(X[['Kms_Driven', 'Selling_Price']].as_matrix())
 
     est = sm.OLS(Y, X).fit()
+
+    trace1 = go.Scatter3d(x=dff.Selling_Price, z=Y,y=dff.Kms_Driven,
+                        mode='markers')
+
+    trace3 = go.Scatter3d(x=dff.Selling_Price, z=est.predict(X),y= dff.Kms_Driven,
+                        mode='markers')
+
+    layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
+                       hovermode='closest'
+                       )
+
+    #trace2 = go.Scatter(x=X_test.flatten(), y=pred,
+        #                line=dict(width=2,
+        #                          color='rgb(255, 0, 0)'))
+
+    return go.Figure(data=[trace1, trace3],
+                     layout=layout), 'Régression linéaire multiple avec Sickit-learn.'
 
 
 # print(est.summary())
@@ -255,3 +272,22 @@ def svm_():
     # plt.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=80,
     #            facecolors="none", zorder=10, edgecolors="k")
     plt.show()
+
+    trace1 = go.Scatter(x=X_train,y=y_train,
+                          mode='markers')
+
+    trace3 = go.Scatter(x=X_test,  y=y_pred,
+                          mode='markers')
+
+    layout = go.Layout(title='Quantification de l\'âge en fonction du prix de vente',
+                       hovermode='closest'
+                       )
+
+    trace2 = go.Scatter(x=X_test, y=y_pred,
+                    line=dict(width=2,
+                              color='rgb(255, 0, 0)'))
+
+    return go.Figure(data=[trace1, trace2,trace3],
+                     layout=layout), 'Régression linéaire multiple avec Sickit-learn.'
+
+
